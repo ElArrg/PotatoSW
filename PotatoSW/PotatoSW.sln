@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PotatoSW", "PotatoSW\PotatoSW.csproj", "{C1103900-F6A1-4818-AF49-C5D4770BAB11}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1103900-F6A1-4818-AF49-C5D4770BAB11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1103900-F6A1-4818-AF49-C5D4770BAB11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1103900-F6A1-4818-AF49-C5D4770BAB11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1103900-F6A1-4818-AF49-C5D4770BAB11}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6E28726C-40E1-47D4-B57C-AB02463F2A26}
+	EndGlobalSection
+EndGlobal
