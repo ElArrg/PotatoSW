@@ -48,6 +48,7 @@
             this.pearsonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tschprowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.limpiezaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+<<<<<<< HEAD
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.resultadoT = new System.Windows.Forms.Label();
@@ -64,6 +65,10 @@
             this.proporcionVT = new System.Windows.Forms.Label();
             this.proporcionVR = new System.Windows.Forms.Label();
             this.multiUso = new System.Windows.Forms.Label();
+=======
+            this.ResultadoT = new System.Windows.Forms.Label();
+            this.ResultadoR = new System.Windows.Forms.Label();
+>>>>>>> FileParser
             ((System.ComponentModel.ISupportInitialize)(this.datasetGrid)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -104,28 +109,44 @@
             // cargarToolStripMenuItem
             // 
             this.cargarToolStripMenuItem.Name = "cargarToolStripMenuItem";
+<<<<<<< HEAD
             this.cargarToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+=======
+            this.cargarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+>>>>>>> FileParser
             this.cargarToolStripMenuItem.Text = "Cargar";
             this.cargarToolStripMenuItem.Click += new System.EventHandler(this.CargarToolStripMenuItem_Click);
             // 
             // guardarToolStripMenuItem
             // 
             this.guardarToolStripMenuItem.Name = "guardarToolStripMenuItem";
+<<<<<<< HEAD
             this.guardarToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+=======
+            this.guardarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+>>>>>>> FileParser
             this.guardarToolStripMenuItem.Text = "Guardar";
             this.guardarToolStripMenuItem.Click += new System.EventHandler(this.GuardarToolStripMenuItem_Click);
             // 
             // guardarComoToolStripMenuItem
             // 
             this.guardarComoToolStripMenuItem.Name = "guardarComoToolStripMenuItem";
+<<<<<<< HEAD
             this.guardarComoToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+=======
+            this.guardarComoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+>>>>>>> FileParser
             this.guardarComoToolStripMenuItem.Text = "Guardar como";
             this.guardarComoToolStripMenuItem.Click += new System.EventHandler(this.GuardarComoToolStripMenuItem_Click);
             // 
             // salirToolStripMenuItem
             // 
             this.salirToolStripMenuItem.Name = "salirToolStripMenuItem";
+<<<<<<< HEAD
             this.salirToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+=======
+            this.salirToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+>>>>>>> FileParser
             this.salirToolStripMenuItem.Text = "Salir";
             this.salirToolStripMenuItem.Click += new System.EventHandler(this.SalirToolStripMenuItem_Click);
             // 
@@ -232,6 +253,7 @@
             this.limpiezaToolStripMenuItem.Size = new System.Drawing.Size(86, 22);
             this.limpiezaToolStripMenuItem.Text = "Limpieza";
             // 
+<<<<<<< HEAD
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
@@ -357,6 +379,9 @@
             this.proporcionVT.UseWaitCursor = true;
             // 
             // proporcionVR
+=======
+            // ResultadoT
+>>>>>>> FileParser
             // 
             this.proporcionVR.AutoSize = true;
             this.proporcionVR.Location = new System.Drawing.Point(801, 193);
@@ -382,6 +407,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+<<<<<<< HEAD
             this.ClientSize = new System.Drawing.Size(902, 451);
             this.Controls.Add(this.multiUso);
             this.Controls.Add(this.proporcionVR);
@@ -397,6 +423,11 @@
             this.Controls.Add(this.nombreT);
             this.Controls.Add(this.resultadoR);
             this.Controls.Add(this.resultadoT);
+=======
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.ResultadoR);
+            this.Controls.Add(this.ResultadoT);
+>>>>>>> FileParser
             this.Controls.Add(this.datasetGrid);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -422,8 +453,6 @@
         private System.Windows.Forms.ToolStripMenuItem cargarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem guardarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem guardarComoToolStripMenuItem;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.ToolStripMenuItem análisisToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem limpiezaToolStripMenuItem;
         private System.Windows.Forms.Label resultadoT;
