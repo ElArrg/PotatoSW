@@ -42,11 +42,7 @@ namespace PotatoSW
         // Variables utilizadas para la activacion de las celdas.
         bool activarC1 = false;
         bool activarC2 = false;
-
-        // Variable que almacen la dirreccion y extencion del archivo leido.
-        string direccionArchivo;
-        string extencionArchivo;
-
+        
         // Variables que almacenan la celda seleccionada para editar.
         string celdaSelect;
         string celdaEdit;
@@ -178,7 +174,7 @@ namespace PotatoSW
                 {
                     if (MessageBox.Show("¿Guardar antes de salir del sistema?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        SaveDataCSV(direccionArchivo);
+                        fileParser.SaveData(fileParser.FilePath, DataToString());
                         this.Close();
                     }
                     else

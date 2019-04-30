@@ -55,7 +55,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Compile Include="AnálisisEstadístico.cs" />
     <Compile Include="CambiarNombre.cs">
       <SubType>Form</SubType>
@@ -70,10 +69,8 @@
       <DependentUpon>Gráficas.cs</DependentUpon>
     </Compile>
     <Compile Include="OperacionesMatemáticas.cs" />
-=======
     <Compile Include="Attribute.cs" />
     <Compile Include="FileParser.cs" />
->>>>>>> FileParser
     <Compile Include="SplashScreen.cs">
       <SubType>Form</SubType>
     </Compile>
