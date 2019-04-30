@@ -17,7 +17,7 @@ namespace PotatoSW
             InitializeComponent();
 
             PotatinTime.Enabled = true;
-            PotatinTime.Interval = 10000;
+            PotatinTime.Interval = 3000;
         }
 
         private void PotatinTime_Tick(object sender, EventArgs e)

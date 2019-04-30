@@ -63,7 +63,6 @@
             // 
             // PotatinTime
             // 
-            this.PotatinTime.Interval = 300;
             this.PotatinTime.Tick += new System.EventHandler(this.PotatinTime_Tick);
             // 
             // PotatinPlace
