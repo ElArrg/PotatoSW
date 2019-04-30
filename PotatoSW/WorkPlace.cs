@@ -15,144 +15,95 @@ namespace PotatoSW
 {
     public partial class WorkPlace : Form
     {
-        string archivo;
+        FileParser fileParser;
 
         public WorkPlace()
         {
+            fileParser = new FileParser();
             InitializeComponent();
         }
 
-        private void salirToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SalirToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void cargarToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CargarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-
-            ofd.InitialDirectory = "c:\\Downloads";
-            ofd.Filter = "CSV Files (*.csv)|*.csv|DATA Files (*.data)|*.data";
-
-            if (ofd.ShowDialog() == DialogResult.OK)
+            using (OpenFileDialog openDialog = new OpenFileDialog())
             {
-                archivo = ofd.FileName;
-                OpenDataCSV(archivo);
+                openDialog.Filter = "CSV Files (*.csv)|*.csv|DATA Files (*.data)|*.data";
+                openDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+                if (openDialog.ShowDialog() == DialogResult.OK)
+                {
+                    fileParser.FilePath = openDialog.FileName;
+                    fileParser.LoadFile();
+                    datasetGrid.DataSource = fileParser.ReadData();
+                    datasetGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                }
             }
         }
-
-        private void OpenDataCSV(string filePath)
+        
+        private string DataToString()
         {
-            DataTable dt = new DataTable();
+            string data = "";
 
-            string[] lines = System.IO.File.ReadAllLines(filePath, Encoding.Default);
-
-            if (lines.Length > 0)
+            foreach(DataGridViewRow row in datasetGrid.Rows)
             {
-
-                string firstLine = lines[0];
-                string[] headerLabels = firstLine.Split(',');
-
-                foreach (string headerWord in headerLabels)
+                if (!row.IsNewRow)
                 {
-                    dt.Columns.Add(new DataColumn(headerWord));
-                }
-
-                for (int r = 1; r < lines.Length; r++)
-                {
-                    string[] dataWord = lines[r].Split(',');
-                    DataRow dr = dt.NewRow();
-                    int columnIndex = 0;
-                    foreach (string headerWord in headerLabels)
+                    foreach (DataGridViewCell cell in row.Cells)
                     {
-                        dr[headerWord] = dataWord[columnIndex++];
+                        if (!cell.OwningColumn.Name.Equals("ID"))
+                        {
+                            data += cell.Value.ToString() + ',';
+                        }
+                    }
+                    data = data.TrimEnd(',') + '\n';
+                }
+            }
+
+            return data.Trim();
+        }
+
+        private void GuardarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fileParser.SaveData(fileParser.FilePath, DataToString());
+        }
+
+        private void GuardarComoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (fileParser != null)
+            {
+                using (SaveFileDialog saveDialog = new SaveFileDialog())
+                {
+                    string filePath;
+                    saveDialog.CreatePrompt = true;
+                    saveDialog.OverwritePrompt = true;
+                    saveDialog.FileName = fileParser.Relation;
+                    saveDialog.DefaultExt = "data";
+                    saveDialog.Filter = "DATA Files (*.data)|*.data|CSV Files (*.csv)|*.csv";
+                    filePath = (fileParser.FilePath == "") ?
+                        Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) :
+                        fileParser.FilePath;
+                    saveDialog.InitialDirectory = filePath;
+
+                    if (saveDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        fileParser.SaveData(saveDialog.FileName, DataToString());
                     }
 
-                    dt.Rows.Add(dr);
                 }
             }
-
-            if (dt.Rows.Count > 0)
-            {
-                CSVData.DataSource = dt;
-            }
-
-            this.CSVData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-
-            CSVData.MouseClick += new MouseEventHandler(CSVData_MouseClick);
         }
-
-        private void guardarToolStripMenuItem_Click(object sender, EventArgs e)
+        
+        private void ArchivoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            datasetGrid.EndEdit();
         }
 
-        private void guardarComoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
-
-            sfd.InitialDirectory = "c:\\Downloads";
-            sfd.Filter = "CSV Files (*.csv)|*.csv|DATA Files (*.data)|*.data";
-
-            if (CSVData.Rows.Count == 0)
-            {
-                return;
-            }
-            else
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                SaveAsDataCSV(sfd.FileName);
-            }
-        }
-
-        private void SaveAsDataCSV(string filePath)
-        {
-            StringBuilder csvMemoria = new StringBuilder();
-
-            string columnsHeader = "";
-
-            //para los títulos de las columnas
-            for (int i = 0; i < CSVData.Columns.Count; i++)
-            {
-                if (i == CSVData.Columns.Count - 1)
-                {
-                    columnsHeader += CSVData.Columns[i].Name;
-                }
-                else
-                {
-                    columnsHeader += CSVData.Columns[i].Name + ",";
-                }
-            }
-
-            csvMemoria.Append(columnsHeader + Environment.NewLine);
-
-            for (int m = 0; m < CSVData.Rows.Count; m++)
-            {
-                for (int n = 0; n < CSVData.Columns.Count; n++)
-                {
-                    //si es la última columna no poner el ,
-                    if (n == CSVData.Columns.Count - 1)
-                    {
-                        csvMemoria.Append(CSVData.Rows[m].Cells[n].Value);
-                    }
-                    else
-                    {
-                        csvMemoria.Append(CSVData.Rows[m].Cells[n].Value + ",");
-                    }
-                }
-                csvMemoria.AppendLine();
-            }
-            System.IO.StreamWriter sw = new System.IO.StreamWriter(filePath, true, System.Text.Encoding.Default);
-            sw.Write(csvMemoria.ToString());
-            sw.Close();
-        }
-
-        private void archivoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CSVData.EndEdit();
-        }
-
-        void CSVData_MouseClick(object sender, MouseEventArgs e)
+        void DatasetGrid_MouseClick(object sender, MouseEventArgs e)
         {
             ContextMenuStrip menu = new ContextMenuStrip();
 
@@ -163,7 +114,7 @@ namespace PotatoSW
 
             }
 
-            menu.Show(CSVData, new Point(e.X, e.Y));
+            menu.Show(datasetGrid, new Point(e.X, e.Y));
         }
     }
 }
