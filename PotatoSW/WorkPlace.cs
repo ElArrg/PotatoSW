@@ -87,7 +87,7 @@ namespace PotatoSW
         // ----------------------------------------------- FUNCIONES DEL ARCHIVO ------------------------------------------------------
 
         // Funcion que manda los valores al metodo para cargar archivo.
-        private void cargarToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CargarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
 
@@ -105,9 +105,9 @@ namespace PotatoSW
         }
 
         // Funcion que manda los valores al metodo para sobreescribir los datos.
-        private void guardarToolStripMenuItem_Click(object sender, EventArgs e)
+        private void GuardarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (CSVData.Rows.Count == 0)
+            if (datasetGrid.Rows.Count == 0)
             {
                 return;
             }
@@ -118,14 +118,14 @@ namespace PotatoSW
         }
 
         // Funcion que manda los valores al metodo para guardar como.
-        private void guardarComoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void GuardarComoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog sfd = new SaveFileDialog();
 
             sfd.InitialDirectory = "c:\\Downloads";
             sfd.Filter = "CSV Files (*.csv)|*.csv|DATA Files (*.data)|*.data";
 
-            if (CSVData.Rows.Count == 0)
+            if (datasetGrid.Rows.Count == 0)
             {
                 return;
             }
@@ -136,9 +136,9 @@ namespace PotatoSW
         }
 
         // Funcion para cerrar del programa.
-        private void salirToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SalirToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (CSVData.Rows.Count == 0)
+            if (datasetGrid.Rows.Count == 0)
             {
                 this.Close();
             }
@@ -162,7 +162,7 @@ namespace PotatoSW
         }
 
         // Funcion para desplegar un menu en el gridview.
-        private void CSVData_MouseClick(object sender, MouseEventArgs e)
+        private void DatasetGrid_MouseClick(object sender, MouseEventArgs e)
         {
             ContextMenuStrip menu = new ContextMenuStrip();
 
@@ -184,45 +184,45 @@ namespace PotatoSW
 
             }
 
-            menu.Show(CSVData, new Point(e.X, e.Y));
-            menu.ItemClicked += new ToolStripItemClickedEventHandler(menu_ClickedItem);
+            menu.Show(datasetGrid, new Point(e.X, e.Y));
+            menu.ItemClicked += new ToolStripItemClickedEventHandler(Menu_ClickedItem);
         }
 
         // Funcion para realizar operaciones con la opciones seleccionada.
-        private void menu_ClickedItem(object sender, ToolStripItemClickedEventArgs e)
+        private void Menu_ClickedItem(object sender, ToolStripItemClickedEventArgs e)
         {
             switch (e.ClickedItem.Name.ToString())
             {
                 case "conjunto":
                     multiUso.Visible = false;
-                    indiceColumna = CSVData.CurrentCell.ColumnIndex;
-                    llenarListasUni();
+                    indiceColumna = datasetGrid.CurrentCell.ColumnIndex;
+                    LlenarListasUni();
                     break;
                 case "Columna 1":
-                    columnaSelec1 = CSVData.CurrentCell.ColumnIndex.ToString();
+                    columnaSelec1 = datasetGrid.CurrentCell.ColumnIndex.ToString();
                     activarC1 = true;
-                    llenarListasBi(activarC1, activarC2);
+                    LlenarListasBi(activarC1, activarC2);
                     break;
                 case "Columna 2":
-                    columnaSelec2 = CSVData.CurrentCell.ColumnIndex.ToString();
+                    columnaSelec2 = datasetGrid.CurrentCell.ColumnIndex.ToString();
                     activarC2 = true;
-                    llenarListasBi(activarC1, activarC2);
+                    LlenarListasBi(activarC1, activarC2);
                     break;
                 case "expresión regular":
                     break;
                 case "editar":
-                    indiceColumna = CSVData.CurrentCell.ColumnIndex;
-                    nombreColumna = CSVData.Columns[indiceColumna].Name;
-                    modificarNombreC();
+                    indiceColumna = datasetGrid.CurrentCell.ColumnIndex;
+                    nombreColumna = datasetGrid.Columns[indiceColumna].Name;
+                    ModificarNombreC();
                     break;
                 case "Agregar atributo":
                     break;
                 case "Eliminar atributo":
                     if (MessageBox.Show(new Form() { TopMost = true }, "¿Eliminar atributo?", "Eliminacion de atributo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        CSVData.Columns.RemoveAt(CSVData.CurrentCell.ColumnIndex);
+                        datasetGrid.Columns.RemoveAt(datasetGrid.CurrentCell.ColumnIndex);
                         modificacion = true;
-                        verificarDatos();
+                        VerificarDatos();
                     }
                     break;
                 case "Agregar instacia":
@@ -230,9 +230,9 @@ namespace PotatoSW
                 case "Eliminar instancia":
                     if (MessageBox.Show(new Form() { TopMost = true }, "¿Eliminar instancia?", "Eliminacion de instancia", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        CSVData.Rows.RemoveAt(CSVData.CurrentRow.Index);
+                        datasetGrid.Rows.RemoveAt(datasetGrid.CurrentRow.Index);
                         modificacion = true;
-                        verificarDatos();
+                        VerificarDatos();
                     }
                     break;
             }
@@ -241,47 +241,47 @@ namespace PotatoSW
         // ----------------------------------------------- FUNCIONES DEL ANALISIS ------------------------------------------------------
 
         // Funcion que muestra el resultado del metodo de Pearson.
-        private void pearsonToolStripMenuItem_Click(object sender, EventArgs e)
+        private void PearsonToolStripMenuItem_Click(object sender, EventArgs e)
         {
             resultadoR.Text = string.Format("{0:n5}", (análisis.Pearson(datosC1Pearson, datosC2Pearson)));
         }
 
         // Funcion que muestra el resultado del metodo de Tschuprow.
-        private void tschprowToolStripMenuItem_Click(object sender, EventArgs e)
+        private void TschprowToolStripMenuItem_Click(object sender, EventArgs e)
         {
             resultadoR.Text = string.Format("{0:n5}", (análisis.Tschuprow(contadorPalabrasC1, contadorPalabrasC2, datosC1Tschprow, datosC2Tschprow)));
         }
 
         // Funcion que muestra el resultado del metodo de media.
-        private void mediaToolStripMenuItem_Click(object sender, EventArgs e)
+        private void MediaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             multiUso.Text = "Media: " + string.Format("{0:n5}", (operaciones.Media(boxPlot)));
             multiUso.Visible = true;
         }
 
         // Funcion que muestra el resultado del metodo de mediana.
-        private void medianaToolStripMenuItem_Click(object sender, EventArgs e)
+        private void MedianaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             multiUso.Text = "Mediana: " + operaciones.Mediana(boxPlot);
             multiUso.Visible = true;
         }
 
         // Funcion que muestra el resultado del metodo de moda.
-        private void modaToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ModaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             multiUso.Text = "Moda: " + operaciones.ModaNum(boxPlot);
             multiUso.Visible = true;
         }
 
         // Funcion que muestra el resultado del metodo de desviacion estandar.
-        private void desviaciónEstándarToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DesviaciónEstándarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             multiUso.Text = "Desviación Estándar: " + string.Format("{0:n5}", operaciones.desviaciónEstándar(boxPlot));
             multiUso.Visible = true;
         }
 
         // Funcion que manda los valores a la grafica de boxplot.
-        private void boxPlotToolStripMenuItem_Click(object sender, EventArgs e)
+        private void BoxPlotToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Gráficas graficas = new Gráficas();
 
@@ -290,7 +290,7 @@ namespace PotatoSW
         }
 
         // Funcion que manda los valores a la grafica de barras.
-        private void frecuenciaToolStripMenuItem_Click(object sender, EventArgs e)
+        private void FrecuenciaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Gráficas graficas = new Gráficas();
 
@@ -340,17 +340,17 @@ namespace PotatoSW
 
                 if (dt.Rows.Count > 0)
                 {
-                    CSVData.DataSource = dt;
+                    datasetGrid.DataSource = dt;
                 }
 
-                verificarDatos();
+                VerificarDatos();
 
-                this.CSVData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-                this.CSVData.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+                this.datasetGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                this.datasetGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 
-                CSVData.MouseClick += new MouseEventHandler(CSVData_MouseClick);
-                CSVData.CellDoubleClick += CSVData_CellDoubleClick;
-                CSVData.CellEndEdit += CSVData_CellEndEdit;
+                datasetGrid.MouseClick += new MouseEventHandler(DatasetGrid_MouseClick);
+                datasetGrid.CellDoubleClick += DatasetGrid_CellDoubleClick;
+                datasetGrid.CellEndEdit += DatasetGrid_CellEndEdit;
             }
             else
                 MessageBox.Show("Lectura no disponible");
@@ -369,32 +369,32 @@ namespace PotatoSW
                 string columnsHeader = "";
 
                 // Ciclo que se utiliza para definir las columnas.
-                for (int i = 0; i < CSVData.Columns.Count; i++)
+                for (int i = 0; i < datasetGrid.Columns.Count; i++)
                 {
-                    if (i == CSVData.Columns.Count - 1)
+                    if (i == datasetGrid.Columns.Count - 1)
                     {
-                        columnsHeader += CSVData.Columns[i].Name;
+                        columnsHeader += datasetGrid.Columns[i].Name;
                     }
                     else
                     {
-                        columnsHeader += CSVData.Columns[i].Name + ",";
+                        columnsHeader += datasetGrid.Columns[i].Name + ",";
                     }
                 }
 
                 csvMemoria.Append(columnsHeader + Environment.NewLine);
 
-                for (int m = 0; m < CSVData.Rows.Count - 1; m++)
+                for (int m = 0; m < datasetGrid.Rows.Count - 1; m++)
                 {
-                    for (int n = 0; n < CSVData.Columns.Count; n++)
+                    for (int n = 0; n < datasetGrid.Columns.Count; n++)
                     {
                         // Si es la última columna no poner la coma.
-                        if (n == CSVData.Columns.Count - 1)
+                        if (n == datasetGrid.Columns.Count - 1)
                         {
-                            csvMemoria.Append(CSVData.Rows[m].Cells[n].Value);
+                            csvMemoria.Append(datasetGrid.Rows[m].Cells[n].Value);
                         }
                         else
                         {
-                            csvMemoria.Append(CSVData.Rows[m].Cells[n].Value + ",");
+                            csvMemoria.Append(datasetGrid.Rows[m].Cells[n].Value + ",");
                         }
                     }
                     csvMemoria.AppendLine();
@@ -423,32 +423,32 @@ namespace PotatoSW
                 string columnsHeader = "";
 
                 // Ciclo que se utiliza para definir las columnas.
-                for (int i = 0; i < CSVData.Columns.Count; i++)
+                for (int i = 0; i < datasetGrid.Columns.Count; i++)
                 {
-                    if (i == CSVData.Columns.Count - 1)
+                    if (i == datasetGrid.Columns.Count - 1)
                     {
-                        columnsHeader += CSVData.Columns[i].Name;
+                        columnsHeader += datasetGrid.Columns[i].Name;
                     }
                     else
                     {
-                        columnsHeader += CSVData.Columns[i].Name + ",";
+                        columnsHeader += datasetGrid.Columns[i].Name + ",";
                     }
                 }
 
                 csvMemoria.Append(columnsHeader + Environment.NewLine);
 
-                for (int m = 0; m < CSVData.Rows.Count - 1; m++)
+                for (int m = 0; m < datasetGrid.Rows.Count - 1; m++)
                 {
-                    for (int n = 0; n < CSVData.Columns.Count; n++)
+                    for (int n = 0; n < datasetGrid.Columns.Count; n++)
                     {
                         // Si es la última columna no poner la coma.
-                        if (n == CSVData.Columns.Count - 1)
+                        if (n == datasetGrid.Columns.Count - 1)
                         {
-                            csvMemoria.Append(CSVData.Rows[m].Cells[n].Value);
+                            csvMemoria.Append(datasetGrid.Rows[m].Cells[n].Value);
                         }
                         else
                         {
-                            csvMemoria.Append(CSVData.Rows[m].Cells[n].Value + ",");
+                            csvMemoria.Append(datasetGrid.Rows[m].Cells[n].Value + ",");
                         }
                     }
                     csvMemoria.AppendLine();
@@ -466,38 +466,38 @@ namespace PotatoSW
         }
 
         // Funcion para terminar la ediccion del gridview.
-        private void archivoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ArchivoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (CSVData.IsCurrentCellInEditMode)
+            if (datasetGrid.IsCurrentCellInEditMode)
             {
-                CSVData.EndEdit();
+                datasetGrid.EndEdit();
             }
         }
 
         // Funcion que empieza la ediccion de una celda al darle doble click.
-        private void CSVData_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void DatasetGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            celdaSelect = CSVData.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+            celdaSelect = datasetGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
             fila = e.RowIndex;
             columna = e.ColumnIndex;
-            CSVData.BeginEdit(true);
+            datasetGrid.BeginEdit(true);
         }
 
         // Funcion que termina la edicion de la celda.
-        private void CSVData_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private void DatasetGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            celdaEdit = CSVData.Rows[fila].Cells[columna].Value.ToString();
+            celdaEdit = datasetGrid.Rows[fila].Cells[columna].Value.ToString();
 
             if (celdaEdit != celdaSelect || celdaSelect == null)
             {
                 modificacion = true;
             }
 
-            verificarDatos();
+            VerificarDatos();
         }
 
         // Funcion que verifica si los datos son correctos y actualiza la informacion de la izquierda.
-        private void verificarDatos()
+        private void VerificarDatos()
         {
             int porciento = 100;
             double proporcion = 0.0;
@@ -507,35 +507,35 @@ namespace PotatoSW
 
             análisisToolStripMenuItem.Enabled = true;
 
-            for (int numberOfColumns = 0; numberOfColumns < this.CSVData.Columns.Count; numberOfColumns++)
+            for (int numberOfColumns = 0; numberOfColumns < this.datasetGrid.Columns.Count; numberOfColumns++)
             {
                 int valorNumerico = 0;
                 int valorLetra = 0;
 
-                for (int numberOfCells = 0; numberOfCells < this.CSVData.Rows.Count - 1; numberOfCells++)
+                for (int numberOfCells = 0; numberOfCells < this.datasetGrid.Rows.Count - 1; numberOfCells++)
                 {
                     valoresT++;
 
-                    if (string.IsNullOrEmpty(CSVData.Rows[numberOfCells].Cells[numberOfColumns].Value.ToString()) || string.IsNullOrWhiteSpace(CSVData.Rows[numberOfCells].Cells[numberOfColumns].Value.ToString()))
+                    if (string.IsNullOrEmpty(datasetGrid.Rows[numberOfCells].Cells[numberOfColumns].Value.ToString()) || string.IsNullOrWhiteSpace(datasetGrid.Rows[numberOfCells].Cells[numberOfColumns].Value.ToString()))
                     {
                         valoresVacios = true;
                     }
                     else
                         valoresVacios = false;
 
-                    if (valoresVacios || CSVData.Rows[numberOfCells].Cells[numberOfColumns].Value.ToString() == "?")
+                    if (valoresVacios || datasetGrid.Rows[numberOfCells].Cells[numberOfColumns].Value.ToString() == "?")
                     {
-                        CSVData.Rows[numberOfCells].Cells[numberOfColumns].Style.BackColor = Color.OrangeRed;
+                        datasetGrid.Rows[numberOfCells].Cells[numberOfColumns].Style.BackColor = Color.OrangeRed;
                         valoresF++;
-                        CSVData.Rows[numberOfCells].Cells[numberOfColumns].Value = "?";
+                        datasetGrid.Rows[numberOfCells].Cells[numberOfColumns].Value = "?";
                         análisisToolStripMenuItem.Enabled = false;
                     }
                     else
                     {
-                        CSVData.Rows[numberOfCells].Cells[numberOfColumns].Style.BackColor = Color.White;
+                        datasetGrid.Rows[numberOfCells].Cells[numberOfColumns].Style.BackColor = Color.White;
                     }
 
-                    var valorColumna = CSVData.Rows[numberOfCells].Cells[numberOfColumns].Value;
+                    var valorColumna = datasetGrid.Rows[numberOfCells].Cells[numberOfColumns].Value;
 
                     if (Valnum.IsMatch(valorColumna.ToString()))
                     {
@@ -557,15 +557,15 @@ namespace PotatoSW
                 
             }
 
-            verificarDominios();
+            VerificarDominios();
 
             proporcion = ((double)(valoresF * porciento) / valoresT);
 
             cantidadAR.Visible = true;
-            cantidadAR.Text = CSVData.ColumnCount.ToString();
+            cantidadAR.Text = datasetGrid.ColumnCount.ToString();
 
             cantidadIR.Visible = true;
-            cantidadIR.Text = ((CSVData.Rows.Count) - 1).ToString();
+            cantidadIR.Text = ((datasetGrid.Rows.Count) - 1).ToString();
 
             valoresFR.Visible = true;
             valoresFR.Text = valoresF.ToString();
@@ -575,18 +575,18 @@ namespace PotatoSW
         }
 
         // Funcion que verifica que los datos entren en el dominio de la columna.
-        private void verificarDominios()
+        private void VerificarDominios()
         {
-            for (int numberOfColumns = 0; numberOfColumns < this.CSVData.Columns.Count; numberOfColumns++)
+            for (int numberOfColumns = 0; numberOfColumns < this.datasetGrid.Columns.Count; numberOfColumns++)
             {
                 if (tipoColumna[numberOfColumns] == "Numerico")
                 {
-                    for (int numberOfCells = 0; numberOfCells < this.CSVData.Rows.Count - 1; numberOfCells++)
+                    for (int numberOfCells = 0; numberOfCells < this.datasetGrid.Rows.Count - 1; numberOfCells++)
                     {
-                        if (Valletra.IsMatch(CSVData.Rows[numberOfCells].Cells[numberOfColumns].Value.ToString()))
+                        if (Valletra.IsMatch(datasetGrid.Rows[numberOfCells].Cells[numberOfColumns].Value.ToString()))
                         {
                             valoresF++;
-                            CSVData.Rows[numberOfCells].Cells[numberOfColumns].Style.BackColor = Color.OrangeRed;
+                            datasetGrid.Rows[numberOfCells].Cells[numberOfColumns].Style.BackColor = Color.OrangeRed;
                             análisisToolStripMenuItem.Enabled = false;
                         }
                     }
@@ -596,7 +596,7 @@ namespace PotatoSW
 
         // ------------------------------------ METODOS USADOS POR EL ANALISIS ESTADISTICO ----------------------------------
 
-        private void llenarListasBi(bool column1, bool column2)
+        private void LlenarListasBi(bool column1, bool column2)
         {
             if (activarC1 && activarC2)
             {
@@ -607,11 +607,11 @@ namespace PotatoSW
                         datosC1Pearson.Clear();
                         datosC2Pearson.Clear();
 
-                        for (int i = 0; i < CSVData.RowCount - 1; i++)
+                        for (int i = 0; i < datasetGrid.RowCount - 1; i++)
                         {
-                            if (CSVData.Rows[i].Cells[Int32.Parse(columnaSelec1)].Value.ToString() != "")
+                            if (datasetGrid.Rows[i].Cells[Int32.Parse(columnaSelec1)].Value.ToString() != "")
                             {
-                                datosC1Pearson.Add(Double.Parse(CSVData.Rows[i].Cells[Int32.Parse(columnaSelec1)].Value.ToString()));
+                                datosC1Pearson.Add(Double.Parse(datasetGrid.Rows[i].Cells[Int32.Parse(columnaSelec1)].Value.ToString()));
                             }
                             else
                             {
@@ -619,11 +619,11 @@ namespace PotatoSW
                             }
                         }
 
-                        for (int i = 0; i < CSVData.RowCount - 1; i++)
+                        for (int i = 0; i < datasetGrid.RowCount - 1; i++)
                         {
-                            if (CSVData.Rows[i].Cells[Int32.Parse(columnaSelec2)].Value.ToString() != "")
+                            if (datasetGrid.Rows[i].Cells[Int32.Parse(columnaSelec2)].Value.ToString() != "")
                             {
-                                datosC2Pearson.Add(Double.Parse(CSVData.Rows[i].Cells[Int32.Parse(columnaSelec2)].Value.ToString()));
+                                datosC2Pearson.Add(Double.Parse(datasetGrid.Rows[i].Cells[Int32.Parse(columnaSelec2)].Value.ToString()));
                             }
                             else
                             {
@@ -641,11 +641,11 @@ namespace PotatoSW
                         datosC1Tschprow.Clear();
                         datosC2Tschprow.Clear();
 
-                        for (int i = 0; i < CSVData.RowCount - 1; i++)
+                        for (int i = 0; i < datasetGrid.RowCount - 1; i++)
                         {
-                            if (CSVData.Rows[i].Cells[Int32.Parse(columnaSelec1)].Value.ToString() != "")
+                            if (datasetGrid.Rows[i].Cells[Int32.Parse(columnaSelec1)].Value.ToString() != "")
                             {
-                                datosC1Tschprow.Add(CSVData.Rows[i].Cells[Int32.Parse(columnaSelec1)].Value.ToString());
+                                datosC1Tschprow.Add(datasetGrid.Rows[i].Cells[Int32.Parse(columnaSelec1)].Value.ToString());
                             }
                             else
                             {
@@ -676,11 +676,11 @@ namespace PotatoSW
                             }
                         }
 
-                        for (int i = 0; i < CSVData.RowCount - 1; i++)
+                        for (int i = 0; i < datasetGrid.RowCount - 1; i++)
                         {
-                            if (CSVData.Rows[i].Cells[Int32.Parse(columnaSelec2)].Value.ToString() != "")
+                            if (datasetGrid.Rows[i].Cells[Int32.Parse(columnaSelec2)].Value.ToString() != "")
                             {
-                                datosC2Tschprow.Add(CSVData.Rows[i].Cells[Int32.Parse(columnaSelec2)].Value.ToString());
+                                datosC2Tschprow.Add(datasetGrid.Rows[i].Cells[Int32.Parse(columnaSelec2)].Value.ToString());
                             }
                             else
                             {
@@ -733,19 +733,19 @@ namespace PotatoSW
             }
         }
 
-        private void llenarListasUni()
+        private void LlenarListasUni()
         {
             if (tipoColumna[indiceColumna] == "Numerico")
             {
                 boxPlot.Clear();
 
-                nombreColumna = CSVData.Columns[indiceColumna].Name;
+                nombreColumna = datasetGrid.Columns[indiceColumna].Name;
 
-                for (int i = 0; i < CSVData.RowCount - 1; i++)
+                for (int i = 0; i < datasetGrid.RowCount - 1; i++)
                 {
-                    if (CSVData.Rows[i].Cells[indiceColumna].Value.ToString() != "")
+                    if (datasetGrid.Rows[i].Cells[indiceColumna].Value.ToString() != "")
                     {
-                        boxPlot.Add(Double.Parse(CSVData.Rows[i].Cells[indiceColumna].Value.ToString()));
+                        boxPlot.Add(Double.Parse(datasetGrid.Rows[i].Cells[indiceColumna].Value.ToString()));
                     }
                     else
                     {
@@ -753,7 +753,7 @@ namespace PotatoSW
                     }
                 }
 
-                activarFuncionesUnivariablesNum();
+                ActivarFuncionesUnivariablesNum();
                 frecuenciaToolStripMenuItem.Visible = false;
             }
             else if (tipoColumna[indiceColumna] == "Categorico")
@@ -761,11 +761,11 @@ namespace PotatoSW
                 frecuencia.Clear();
                 frecuenciaP.Clear();
 
-                for (int i = 0; i < CSVData.RowCount - 1; i++)
+                for (int i = 0; i < datasetGrid.RowCount - 1; i++)
                 {
-                    if (CSVData.Rows[i].Cells[indiceColumna].Value.ToString() != "")
+                    if (datasetGrid.Rows[i].Cells[indiceColumna].Value.ToString() != "")
                     {
-                        frecuencia.Add(CSVData.Rows[i].Cells[indiceColumna].Value.ToString());
+                        frecuencia.Add(datasetGrid.Rows[i].Cells[indiceColumna].Value.ToString());
                     }
                     else
                     {
@@ -796,21 +796,21 @@ namespace PotatoSW
                     }
                 }
 
-                desactivarFuncionesUnivariablesNum();
+                DesactivarFuncionesUnivariablesNum();
                 frecuenciaToolStripMenuItem.Visible = true;
             }
         }
 
-        private void modificarNombreC()
+        private void ModificarNombreC()
         {
             CambiarNombre nuevoNombre = new CambiarNombre();
             DialogResult respuesta = nuevoNombre.ShowDialog();
 
             if (respuesta == DialogResult.OK)
             {
-                string nuevoNombreColumna = CSVData.Columns[indiceColumna].Name;
+                string nuevoNombreColumna = datasetGrid.Columns[indiceColumna].Name;
 
-                CSVData.Columns[indiceColumna].HeaderText = nuevoNombre.nuevoNomb;
+                datasetGrid.Columns[indiceColumna].HeaderText = nuevoNombre.nuevoNomb;
 
                 if (nombreColumna != nuevoNombre.nuevoNomb)
                 {
@@ -821,7 +821,7 @@ namespace PotatoSW
 
         // ------------------------------------ ACTIVACION/DESACTIVACION DE BOTONES ----------------------------------
 
-        private void desactivarFuncionesUnivariablesNum()
+        private void DesactivarFuncionesUnivariablesNum()
         {
             mediaToolStripMenuItem.Visible = false;
             medianaToolStripMenuItem.Visible = false;
@@ -830,7 +830,7 @@ namespace PotatoSW
             boxPlotToolStripMenuItem.Visible = false;
         }
 
-        private void activarFuncionesUnivariablesNum()
+        private void ActivarFuncionesUnivariablesNum()
         {
             mediaToolStripMenuItem.Visible = true;
             medianaToolStripMenuItem.Visible = true;

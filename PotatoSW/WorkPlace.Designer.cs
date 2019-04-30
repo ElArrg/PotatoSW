@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkPlace));
-            this.CSVData = new System.Windows.Forms.DataGridView();
+            this.datasetGrid = new System.Windows.Forms.DataGridView();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.archivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cargarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,17 +64,17 @@
             this.proporcionVT = new System.Windows.Forms.Label();
             this.proporcionVR = new System.Windows.Forms.Label();
             this.multiUso = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.CSVData)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.datasetGrid)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // CSVData
+            // datasetGrid
             // 
-            this.CSVData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.CSVData.Location = new System.Drawing.Point(12, 27);
-            this.CSVData.Name = "CSVData";
-            this.CSVData.Size = new System.Drawing.Size(527, 411);
-            this.CSVData.TabIndex = 0;
+            this.datasetGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.datasetGrid.Location = new System.Drawing.Point(12, 27);
+            this.datasetGrid.Name = "datasetGrid";
+            this.datasetGrid.Size = new System.Drawing.Size(527, 411);
+            this.datasetGrid.TabIndex = 0;
             // 
             // menuStrip1
             // 
@@ -99,35 +99,35 @@
             this.archivoToolStripMenuItem.Name = "archivoToolStripMenuItem";
             this.archivoToolStripMenuItem.Size = new System.Drawing.Size(77, 22);
             this.archivoToolStripMenuItem.Text = "Archivo";
-            this.archivoToolStripMenuItem.Click += new System.EventHandler(this.archivoToolStripMenuItem_Click);
+            this.archivoToolStripMenuItem.Click += new System.EventHandler(this.ArchivoToolStripMenuItem_Click);
             // 
             // cargarToolStripMenuItem
             // 
             this.cargarToolStripMenuItem.Name = "cargarToolStripMenuItem";
             this.cargarToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.cargarToolStripMenuItem.Text = "Cargar";
-            this.cargarToolStripMenuItem.Click += new System.EventHandler(this.cargarToolStripMenuItem_Click);
+            this.cargarToolStripMenuItem.Click += new System.EventHandler(this.CargarToolStripMenuItem_Click);
             // 
             // guardarToolStripMenuItem
             // 
             this.guardarToolStripMenuItem.Name = "guardarToolStripMenuItem";
             this.guardarToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.guardarToolStripMenuItem.Text = "Guardar";
-            this.guardarToolStripMenuItem.Click += new System.EventHandler(this.guardarToolStripMenuItem_Click);
+            this.guardarToolStripMenuItem.Click += new System.EventHandler(this.GuardarToolStripMenuItem_Click);
             // 
             // guardarComoToolStripMenuItem
             // 
             this.guardarComoToolStripMenuItem.Name = "guardarComoToolStripMenuItem";
             this.guardarComoToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.guardarComoToolStripMenuItem.Text = "Guardar como";
-            this.guardarComoToolStripMenuItem.Click += new System.EventHandler(this.guardarComoToolStripMenuItem_Click);
+            this.guardarComoToolStripMenuItem.Click += new System.EventHandler(this.GuardarComoToolStripMenuItem_Click);
             // 
             // salirToolStripMenuItem
             // 
             this.salirToolStripMenuItem.Name = "salirToolStripMenuItem";
             this.salirToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.salirToolStripMenuItem.Text = "Salir";
-            this.salirToolStripMenuItem.Click += new System.EventHandler(this.salirToolStripMenuItem_Click);
+            this.salirToolStripMenuItem.Click += new System.EventHandler(this.SalirToolStripMenuItem_Click);
             // 
             // análisisToolStripMenuItem
             // 
@@ -149,7 +149,7 @@
             this.boxPlotToolStripMenuItem,
             this.frecuenciaToolStripMenuItem});
             this.univariableToolStripMenuItem.Name = "univariableToolStripMenuItem";
-            this.univariableToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.univariableToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.univariableToolStripMenuItem.Text = "Univariable";
             // 
             // mediaToolStripMenuItem
@@ -158,7 +158,7 @@
             this.mediaToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.mediaToolStripMenuItem.Text = "Media";
             this.mediaToolStripMenuItem.Visible = false;
-            this.mediaToolStripMenuItem.Click += new System.EventHandler(this.mediaToolStripMenuItem_Click);
+            this.mediaToolStripMenuItem.Click += new System.EventHandler(this.MediaToolStripMenuItem_Click);
             // 
             // medianaToolStripMenuItem
             // 
@@ -166,7 +166,7 @@
             this.medianaToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.medianaToolStripMenuItem.Text = "Mediana";
             this.medianaToolStripMenuItem.Visible = false;
-            this.medianaToolStripMenuItem.Click += new System.EventHandler(this.medianaToolStripMenuItem_Click);
+            this.medianaToolStripMenuItem.Click += new System.EventHandler(this.MedianaToolStripMenuItem_Click);
             // 
             // modaToolStripMenuItem
             // 
@@ -174,7 +174,7 @@
             this.modaToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.modaToolStripMenuItem.Text = "Moda";
             this.modaToolStripMenuItem.Visible = false;
-            this.modaToolStripMenuItem.Click += new System.EventHandler(this.modaToolStripMenuItem_Click);
+            this.modaToolStripMenuItem.Click += new System.EventHandler(this.ModaToolStripMenuItem_Click);
             // 
             // desviaciónEstándarToolStripMenuItem
             // 
@@ -182,7 +182,7 @@
             this.desviaciónEstándarToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.desviaciónEstándarToolStripMenuItem.Text = "Desviación Estándar";
             this.desviaciónEstándarToolStripMenuItem.Visible = false;
-            this.desviaciónEstándarToolStripMenuItem.Click += new System.EventHandler(this.desviaciónEstándarToolStripMenuItem_Click);
+            this.desviaciónEstándarToolStripMenuItem.Click += new System.EventHandler(this.DesviaciónEstándarToolStripMenuItem_Click);
             // 
             // boxPlotToolStripMenuItem
             // 
@@ -190,7 +190,7 @@
             this.boxPlotToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.boxPlotToolStripMenuItem.Text = "Box Plot";
             this.boxPlotToolStripMenuItem.Visible = false;
-            this.boxPlotToolStripMenuItem.Click += new System.EventHandler(this.boxPlotToolStripMenuItem_Click);
+            this.boxPlotToolStripMenuItem.Click += new System.EventHandler(this.BoxPlotToolStripMenuItem_Click);
             // 
             // frecuenciaToolStripMenuItem
             // 
@@ -198,7 +198,7 @@
             this.frecuenciaToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.frecuenciaToolStripMenuItem.Text = "Frecuencia";
             this.frecuenciaToolStripMenuItem.Visible = false;
-            this.frecuenciaToolStripMenuItem.Click += new System.EventHandler(this.frecuenciaToolStripMenuItem_Click);
+            this.frecuenciaToolStripMenuItem.Click += new System.EventHandler(this.FrecuenciaToolStripMenuItem_Click);
             // 
             // bivariableToolStripMenuItem
             // 
@@ -206,7 +206,7 @@
             this.pearsonToolStripMenuItem,
             this.tschprowToolStripMenuItem});
             this.bivariableToolStripMenuItem.Name = "bivariableToolStripMenuItem";
-            this.bivariableToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.bivariableToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.bivariableToolStripMenuItem.Text = "Bivariable";
             // 
             // pearsonToolStripMenuItem
@@ -215,7 +215,7 @@
             this.pearsonToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.pearsonToolStripMenuItem.Text = "Pearson";
             this.pearsonToolStripMenuItem.Visible = false;
-            this.pearsonToolStripMenuItem.Click += new System.EventHandler(this.pearsonToolStripMenuItem_Click);
+            this.pearsonToolStripMenuItem.Click += new System.EventHandler(this.PearsonToolStripMenuItem_Click);
             // 
             // tschprowToolStripMenuItem
             // 
@@ -223,7 +223,7 @@
             this.tschprowToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.tschprowToolStripMenuItem.Text = "Tschuprow";
             this.tschprowToolStripMenuItem.Visible = false;
-            this.tschprowToolStripMenuItem.Click += new System.EventHandler(this.tschprowToolStripMenuItem_Click);
+            this.tschprowToolStripMenuItem.Click += new System.EventHandler(this.TschprowToolStripMenuItem_Click);
             // 
             // limpiezaToolStripMenuItem
             // 
@@ -397,7 +397,7 @@
             this.Controls.Add(this.nombreT);
             this.Controls.Add(this.resultadoR);
             this.Controls.Add(this.resultadoT);
-            this.Controls.Add(this.CSVData);
+            this.Controls.Add(this.datasetGrid);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -405,7 +405,7 @@
             this.Name = "WorkPlace";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "WorkPlace";
-            ((System.ComponentModel.ISupportInitialize)(this.CSVData)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.datasetGrid)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -415,7 +415,7 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView CSVData;
+        private System.Windows.Forms.DataGridView datasetGrid;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem archivoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem salirToolStripMenuItem;
