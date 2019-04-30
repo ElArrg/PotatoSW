@@ -15,8 +15,11 @@ namespace PotatoSW
 {
     public partial class WorkPlace : Form
     {
+    	FileParser fileParser;
+
         public WorkPlace()
         {
+            fileParser = new FileParser();
             InitializeComponent();
         }
 
@@ -85,53 +88,76 @@ namespace PotatoSW
         Regex Valletra = new Regex(@"[a-zA-ZñÑ\s]");
 
         // ----------------------------------------------- FUNCIONES DEL ARCHIVO ------------------------------------------------------
+        private string DataToString()
+        {
+            string data = "";
+
+            foreach(DataGridViewRow row in datasetGrid.Rows)
+            {
+                if (!row.IsNewRow)
+                {
+                    foreach (DataGridViewCell cell in row.Cells)
+                    {
+                        if (!cell.OwningColumn.Name.Equals("ID"))
+                        {
+                            data += cell.Value.ToString() + ',';
+                        }
+                    }
+                    data = data.TrimEnd(',') + '\n';
+                }
+            }
+
+            return data.Trim();
+        }
 
         // Funcion que manda los valores al metodo para cargar archivo.
         private void CargarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-
-            ofd.InitialDirectory = "c:\\Downloads";
-            ofd.Filter = "CSV Files (*.csv)|*.csv|DATA Files (*.data)|*.data";
-
-            if (ofd.ShowDialog() == DialogResult.OK)
+            using (OpenFileDialog openDialog = new OpenFileDialog())
             {
-                direccionArchivo = ofd.FileName;
-                OpenDataCSV(direccionArchivo);
+                openDialog.Filter = "CSV Files (*.csv)|*.csv|DATA Files (*.data)|*.data";
+                openDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-                nombreR.Visible = true;
-                nombreR.Text = Path.GetFileName(direccionArchivo);
+                if (openDialog.ShowDialog() == DialogResult.OK)
+                {
+                    fileParser.FilePath = openDialog.FileName;
+                    fileParser.LoadFile();
+                    datasetGrid.DataSource = fileParser.ReadData();
+                    datasetGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                }
             }
         }
 
         // Funcion que manda los valores al metodo para sobreescribir los datos.
         private void GuardarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (datasetGrid.Rows.Count == 0)
-            {
-                return;
-            }
-            else
-            {
-                SaveDataCSV(direccionArchivo);
-            }
+            fileParser.SaveData(fileParser.FilePath, DataToString());
         }
 
         // Funcion que manda los valores al metodo para guardar como.
         private void GuardarComoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-
-            sfd.InitialDirectory = "c:\\Downloads";
-            sfd.Filter = "CSV Files (*.csv)|*.csv|DATA Files (*.data)|*.data";
-
-            if (datasetGrid.Rows.Count == 0)
+            if (fileParser != null)
             {
-                return;
-            }
-            else if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                SaveAsDataCSV(sfd.FileName);
+                using (SaveFileDialog saveDialog = new SaveFileDialog())
+                {
+                    string filePath;
+                    saveDialog.CreatePrompt = true;
+                    saveDialog.OverwritePrompt = true;
+                    saveDialog.FileName = fileParser.Relation;
+                    saveDialog.DefaultExt = "data";
+                    saveDialog.Filter = "DATA Files (*.data)|*.data|CSV Files (*.csv)|*.csv";
+                    filePath = (fileParser.FilePath == "") ?
+                        Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) :
+                        fileParser.FilePath;
+                    saveDialog.InitialDirectory = filePath;
+
+                    if (saveDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        fileParser.SaveData(saveDialog.FileName, DataToString());
+                    }
+
+                }
             }
         }
 
@@ -296,173 +322,6 @@ namespace PotatoSW
 
             graficas.valoresFrecuencia(frecuenciaP);
             graficas.Show();
-        }
-
-        // ------------------------------- METODOS Y FUNCIONES UTILIZADAS UTILIZADOS PARA EL ARCHIVO Y GRIDVIEW -----------------------------
-
-        // Metodo parar rellenar el gridview con los datos del documento que se esta leyendo.
-        private void OpenDataCSV(string filePath)
-        {
-            extencionArchivo = Path.GetExtension(filePath);
-
-            if (extencionArchivo == ".csv")
-            {
-
-                DataTable dt = new DataTable();
-
-                string[] lines = System.IO.File.ReadAllLines(filePath, Encoding.Default);
-
-
-                if (lines.Length > 0)
-                {
-
-                    string firstLine = lines[0];
-                    string[] headerLabels = firstLine.Split(',');
-
-                    foreach (string headerWord in headerLabels)
-                    {
-                        dt.Columns.Add(new DataColumn(headerWord));
-                    }
-
-                    for (int r = 1; r < lines.Length; r++)
-                    {
-                        string[] dataWord = lines[r].Split(',');
-                        DataRow dr = dt.NewRow();
-                        int columnIndex = 0;
-                        foreach (string headerWord in headerLabels)
-                        {
-                            dr[headerWord] = dataWord[columnIndex++];
-                        }
-
-                        dt.Rows.Add(dr);
-                    }
-                }
-
-                if (dt.Rows.Count > 0)
-                {
-                    datasetGrid.DataSource = dt;
-                }
-
-                VerificarDatos();
-
-                this.datasetGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-                this.datasetGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-
-                datasetGrid.MouseClick += new MouseEventHandler(DatasetGrid_MouseClick);
-                datasetGrid.CellDoubleClick += DatasetGrid_CellDoubleClick;
-                datasetGrid.CellEndEdit += DatasetGrid_CellEndEdit;
-            }
-            else
-                MessageBox.Show("Lectura no disponible");
-        }
-
-        // Metodo para guadar los datos del gridview ya se como .csv o .data.
-        private void SaveDataCSV(string filePath)
-        {
-            extencionArchivo = Path.GetExtension(filePath);
-
-            if (extencionArchivo == ".csv")
-            {
-
-                StringBuilder csvMemoria = new StringBuilder();
-
-                string columnsHeader = "";
-
-                // Ciclo que se utiliza para definir las columnas.
-                for (int i = 0; i < datasetGrid.Columns.Count; i++)
-                {
-                    if (i == datasetGrid.Columns.Count - 1)
-                    {
-                        columnsHeader += datasetGrid.Columns[i].Name;
-                    }
-                    else
-                    {
-                        columnsHeader += datasetGrid.Columns[i].Name + ",";
-                    }
-                }
-
-                csvMemoria.Append(columnsHeader + Environment.NewLine);
-
-                for (int m = 0; m < datasetGrid.Rows.Count - 1; m++)
-                {
-                    for (int n = 0; n < datasetGrid.Columns.Count; n++)
-                    {
-                        // Si es la última columna no poner la coma.
-                        if (n == datasetGrid.Columns.Count - 1)
-                        {
-                            csvMemoria.Append(datasetGrid.Rows[m].Cells[n].Value);
-                        }
-                        else
-                        {
-                            csvMemoria.Append(datasetGrid.Rows[m].Cells[n].Value + ",");
-                        }
-                    }
-                    csvMemoria.AppendLine();
-                }
-                System.IO.StreamWriter sw = new System.IO.StreamWriter(direccionArchivo, false, System.Text.Encoding.Default);
-                sw.Write(csvMemoria.ToString());
-                sw.Close();
-
-                celdaSelect = default(string);
-                celdaEdit = default(string);
-            }
-            else
-                MessageBox.Show("Guardar no disponible");
-        }
-
-        // Metodo para guadar los datos del gridview ya se como .csv o .data.
-        private void SaveAsDataCSV(string filePath)
-        {
-            extencionArchivo = Path.GetExtension(filePath);
-
-            if (extencionArchivo == ".csv")
-            {
-
-                StringBuilder csvMemoria = new StringBuilder();
-
-                string columnsHeader = "";
-
-                // Ciclo que se utiliza para definir las columnas.
-                for (int i = 0; i < datasetGrid.Columns.Count; i++)
-                {
-                    if (i == datasetGrid.Columns.Count - 1)
-                    {
-                        columnsHeader += datasetGrid.Columns[i].Name;
-                    }
-                    else
-                    {
-                        columnsHeader += datasetGrid.Columns[i].Name + ",";
-                    }
-                }
-
-                csvMemoria.Append(columnsHeader + Environment.NewLine);
-
-                for (int m = 0; m < datasetGrid.Rows.Count - 1; m++)
-                {
-                    for (int n = 0; n < datasetGrid.Columns.Count; n++)
-                    {
-                        // Si es la última columna no poner la coma.
-                        if (n == datasetGrid.Columns.Count - 1)
-                        {
-                            csvMemoria.Append(datasetGrid.Rows[m].Cells[n].Value);
-                        }
-                        else
-                        {
-                            csvMemoria.Append(datasetGrid.Rows[m].Cells[n].Value + ",");
-                        }
-                    }
-                    csvMemoria.AppendLine();
-                }
-
-                System.IO.StreamWriter sw = new System.IO.StreamWriter(filePath, false, System.Text.Encoding.Default);
-                sw.Write(csvMemoria.ToString());
-                sw.Close();
-
-                celdaSelect = default(string);
-                celdaEdit = default(string);
-            }
-            else
-                MessageBox.Show("Guardar como no disponible");
         }
 
         // Funcion para terminar la ediccion del gridview.
