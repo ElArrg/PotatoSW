@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace PotatoSW
 {
     public class FileParser
-    {
+    {        
         // Symbolic constants
         private const int MAX_CHARS_PER_LINE = 70;
         private const int UNSET_DATA_INDEX = -1;
@@ -30,7 +30,7 @@ namespace PotatoSW
         private string comments;
         private string relation;
         private string missingValue;
-        private List<Attribute> attributes;
+        private List<Attribute> attributes = null;
         private int dataIndex;
         
         // CTOR
@@ -63,8 +63,8 @@ namespace PotatoSW
             Regex regex;
             List<Match> matches;
             string[] fileContent;
+            Attributes.Clear();
 
-            
             fileContent = ReadFile();
 
             if (fileContent != null)
@@ -167,7 +167,7 @@ namespace PotatoSW
         {
             string[] rows;
             DataTable dataTable = null;
-            
+
             dataTable = new DataTable(Relation);
             rows = ReadFile();
             dataTable.Columns.Add("ID");

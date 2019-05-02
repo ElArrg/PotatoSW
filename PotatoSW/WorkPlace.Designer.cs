@@ -82,7 +82,7 @@
             this.limpiezaToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(902, 26);
+            this.menuStrip1.Size = new System.Drawing.Size(924, 26);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -103,7 +103,6 @@
             // 
             this.cargarToolStripMenuItem.Name = "cargarToolStripMenuItem";
             this.cargarToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.cargarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.cargarToolStripMenuItem.Text = "Cargar";
             this.cargarToolStripMenuItem.Click += new System.EventHandler(this.CargarToolStripMenuItem_Click);
             // 
@@ -111,7 +110,6 @@
             // 
             this.guardarToolStripMenuItem.Name = "guardarToolStripMenuItem";
             this.guardarToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.guardarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.guardarToolStripMenuItem.Text = "Guardar";
             this.guardarToolStripMenuItem.Click += new System.EventHandler(this.GuardarToolStripMenuItem_Click);
             // 
@@ -119,7 +117,6 @@
             // 
             this.guardarComoToolStripMenuItem.Name = "guardarComoToolStripMenuItem";
             this.guardarComoToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.guardarComoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.guardarComoToolStripMenuItem.Text = "Guardar como";
             this.guardarComoToolStripMenuItem.Click += new System.EventHandler(this.GuardarComoToolStripMenuItem_Click);
             // 
@@ -127,7 +124,6 @@
             // 
             this.salirToolStripMenuItem.Name = "salirToolStripMenuItem";
             this.salirToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.salirToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.salirToolStripMenuItem.Text = "Salir";
             this.salirToolStripMenuItem.Click += new System.EventHandler(this.SalirToolStripMenuItem_Click);
             // 
@@ -355,7 +351,6 @@
             this.proporcionVT.UseWaitCursor = true;
             // 
             // proporcionVR
-            // ResultadoT
             // 
             this.proporcionVR.AutoSize = true;
             this.proporcionVR.Location = new System.Drawing.Point(801, 193);
@@ -381,7 +376,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(902, 451);
+            this.ClientSize = new System.Drawing.Size(924, 461);
             this.Controls.Add(this.multiUso);
             this.Controls.Add(this.proporcionVR);
             this.Controls.Add(this.proporcionVT);
@@ -396,7 +391,6 @@
             this.Controls.Add(this.nombreT);
             this.Controls.Add(this.resultadoR);
             this.Controls.Add(this.resultadoT);
-            this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.datasetGrid);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

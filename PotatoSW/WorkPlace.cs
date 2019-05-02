@@ -15,7 +15,7 @@ namespace PotatoSW
 {
     public partial class WorkPlace : Form
     {
-    	FileParser fileParser;
+        FileParser fileParser;
 
         public WorkPlace()
         {
@@ -42,7 +42,7 @@ namespace PotatoSW
         // Variables utilizadas para la activacion de las celdas.
         bool activarC1 = false;
         bool activarC2 = false;
-        
+
         // Variables que almacenan la celda seleccionada para editar.
         string celdaSelect;
         string celdaEdit;
@@ -79,6 +79,9 @@ namespace PotatoSW
         // Variable de la clase que tiene las operaciones matematicas necesarias para realizar los metodos.
         OperacionesMatemáticas operaciones = new OperacionesMatemáticas();
 
+        int indiceNC;
+        int cantidadFilas;
+
         // Expreciones regulares que permiten identificar si un valor es numerico o string.
         Regex Valnum = new Regex(@"[0-9]{1,9}(\.[0-9]{0,2})?$");
         Regex Valletra = new Regex(@"[a-zA-ZñÑ\s]");
@@ -88,7 +91,7 @@ namespace PotatoSW
         {
             string data = "";
 
-            foreach(DataGridViewRow row in datasetGrid.Rows)
+            foreach (DataGridViewRow row in datasetGrid.Rows)
             {
                 if (!row.IsNewRow)
                 {
@@ -121,6 +124,20 @@ namespace PotatoSW
                     datasetGrid.DataSource = fileParser.ReadData();
                     datasetGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
                 }
+
+                nombreR.Visible = true;
+                nombreR.Text = Path.GetFileName(openDialog.FileName);
+
+                VerificarDatos();
+
+                this.datasetGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                this.datasetGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+
+                datasetGrid.MouseClick += new MouseEventHandler(DatasetGrid_MouseClick);
+                datasetGrid.CellDoubleClick += DatasetGrid_CellDoubleClick;
+                datasetGrid.CellEndEdit += DatasetGrid_CellEndEdit;
+
+                cantidadFilas = datasetGrid.Rows.Count - 1;
             }
         }
 
@@ -231,6 +248,8 @@ namespace PotatoSW
                     LlenarListasBi(activarC1, activarC2);
                     break;
                 case "expresión regular":
+                    indiceColumna = datasetGrid.CurrentCell.ColumnIndex;
+                    MessageBox.Show("" + tipoColumna[indiceColumna] + " " + indiceColumna + " " + datasetGrid.Columns.Count + " " + datasetGrid.Rows.Count);
                     break;
                 case "editar":
                     indiceColumna = datasetGrid.CurrentCell.ColumnIndex;
@@ -238,16 +257,36 @@ namespace PotatoSW
                     ModificarNombreC();
                     break;
                 case "Agregar atributo":
+                    AgregarColumna();
+                    modificacion = true;
+                    VerificarDatos();
                     break;
                 case "Eliminar atributo":
                     if (MessageBox.Show(new Form() { TopMost = true }, "¿Eliminar atributo?", "Eliminacion de atributo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
                         datasetGrid.Columns.RemoveAt(datasetGrid.CurrentCell.ColumnIndex);
+                        tipoColumna.RemoveAt(datasetGrid.CurrentCell.ColumnIndex);
                         modificacion = true;
                         VerificarDatos();
                     }
                     break;
                 case "Agregar instacia":
+                    Int32 index = datasetGrid.Rows.Count - 1;
+
+                    DataTable datatable = new DataTable();
+                    datatable = datasetGrid.DataSource as DataTable;
+                    DataRow datarow;
+
+                    datarow = datatable.NewRow();
+                    datarow[0].ToString();
+                    datatable.Rows.Add(datarow);
+
+                    cantidadFilas++;
+
+                    datasetGrid.Rows[index].Cells[0].Value = cantidadFilas;
+
+                    VerificarDatos();
+                    modificacion = true;
                     break;
                 case "Eliminar instancia":
                     if (MessageBox.Show(new Form() { TopMost = true }, "¿Eliminar instancia?", "Eliminacion de instancia", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -409,7 +448,7 @@ namespace PotatoSW
                 {
                     tipoColumna.Add("Categorico");
                 }
-                
+
             }
 
             VerificarDominios();
@@ -671,6 +710,32 @@ namespace PotatoSW
                 {
                     modificacion = true;
                 }
+            }
+        }
+
+        private void AgregarColumna()
+        {
+            AgregarColumna nuevaColumna = new AgregarColumna();
+            DialogResult respuesta = nuevaColumna.ShowDialog();
+
+            DataGridViewTextBoxColumn nombre = new DataGridViewTextBoxColumn();
+
+            nombre.HeaderText = nuevaColumna.nombreCol;
+
+            if (respuesta == DialogResult.OK)
+            {
+                datasetGrid.Columns.Add(nombre);
+                tipoColumna.Add(nuevaColumna.tipoCol);
+            }
+
+            DataGridViewColumnCollection columnCollection = datasetGrid.Columns;
+            DataGridViewColumn lastVisibleColumn = columnCollection.GetLastColumn(DataGridViewElementStates.Visible, DataGridViewElementStates.None);
+
+            indiceNC = lastVisibleColumn.DisplayIndex;
+
+            for (int numberOfCells = 0; numberOfCells < this.datasetGrid.Rows.Count - 1; numberOfCells++)
+            {
+                datasetGrid.Rows[numberOfCells].Cells[indiceNC].Value = "?";
             }
         }
 

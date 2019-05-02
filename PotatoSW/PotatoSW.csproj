@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <IntermediateOutputPath>C:\Users\Elias\AppData\Local\Temp\vsF659.tmp\Debug\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\Elias\AppData\Local\Temp\vsFD7A.tmp\Debug\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,7 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <IntermediateOutputPath>C:\Users\Elias\AppData\Local\Temp\vsF659.tmp\Release\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\Elias\AppData\Local\Temp\vsFD7A.tmp\Release\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
@@ -55,6 +55,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AgregarColumna.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AgregarColumna.Designer.cs">
+      <DependentUpon>AgregarColumna.cs</DependentUpon>
+    </Compile>
     <Compile Include="AnálisisEstadístico.cs" />
     <Compile Include="CambiarNombre.cs">
       <SubType>Form</SubType>
@@ -85,6 +91,9 @@
     <Compile Include="WorkPlace.Designer.cs">
       <DependentUpon>WorkPlace.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="AgregarColumna.resx">
+      <DependentUpon>AgregarColumna.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CambiarNombre.resx">
       <DependentUpon>CambiarNombre.cs</DependentUpon>
     </EmbeddedResource>
