@@ -10,18 +10,47 @@ using System.Windows.Forms;
 
 namespace PotatoSW
 {
+    /// <summary>
+    /// Representa un dataset.
+    /// </summary>
     public class FileParser
     {        
         // Symbolic constants
+        /// <summary>
+        /// Cantidad máxima de caracteres por línea para un comentario en un archivo de metadatos.
+        /// </summary>
         private const int MAX_CHARS_PER_LINE = 70;
+        /// <summary>
+        /// Especifica el valor de indice cuando no se ha cargado un archivo de dataset.
+        /// </summary>
         private const int UNSET_DATA_INDEX = -1;
+        /// <summary>
+        /// Expresión regular que representa el patron de las etiquetas de un archivo con formato de metadatos.
+        /// </summary>
         private const string METATAGS_PATTERN = @"^(?<TAG_TYPE>%%|@(?:relation|attribute|missingValue|data))\ ?(?<TAG_CONTENT>.*)$";
+        /// <summary>
+        /// Etiqueta que indica un comentario en un archivo con fomrato de metadatos.
+        /// </summary>
         private const string COMMENT_TAG = "%%";
+        /// <summary>
+        /// Etiqueta que indica el nombre del dataset en un archivo con formato de metadatos.
+        /// </summary>
         private const string RELATION_TAG = "@relation";
+        /// <summary>
+        /// Etiqueta que indica la estructura de un atributo del dataset en un archivo con formato de metadatos.
+        /// </summary>
         private const string ATTRIBUTE_TAG = "@attribute";
+        /// <summary>
+        /// Etiqueta que indica la cadena de texto que especifica un valor faltante en el dataset en un archivo con formato de metadatos.
+        /// </summary>
         private const string MISSING_VALUE_TAG = "@missingValue";
+        /// <summary>
+        /// Etiqueta que indica el inicio de las instancias del dataset en la siguiente linea en un archivo con formato de metadatos.
+        /// </summary>
         private const string DATA_TAG = "@data";
-
+        /// <summary>
+        /// Especifica el formato de archivo para el dataset actual.
+        /// </summary>
         public enum FileTypes { EMPTY, CSV, METADATA };
 
         // Attributes
@@ -46,6 +75,10 @@ namespace PotatoSW
         public FileParser(string filePath) : this() => this.FilePath = filePath;
 
         // Methods
+        /// <summary>
+        /// Lee el archivo especificado para el dataset.
+        /// </summary>
+        /// <returns>Las lineas del archivo.</returns>
         private string[] ReadFile()
         {
             string[] lines = null;
@@ -58,6 +91,9 @@ namespace PotatoSW
             return lines;
         }
 
+        /// <summary>
+        /// Carga la información que describe al dataset desde el archivo que representa.
+        /// </summary>
         public void LoadFile()
         {
             Regex regex;
@@ -82,8 +118,6 @@ namespace PotatoSW
                     }
                 }
 
-                //matchCollection = regex.Matches(fileContent);
-
                 if (matches.Count > 0)
                 {
                     FileType = FileTypes.METADATA;
@@ -97,6 +131,10 @@ namespace PotatoSW
             }
         }
 
+        /// <summary>
+        /// Obtiene los valores de las etiquetas de metadatos identificadas para el dataset.
+        /// </summary>
+        /// <param name="matches">Etiquetas de metadatos identificadas.</param>
         private void ParseMetadata(Match[] matches)
         {
             string comments = "";
@@ -141,6 +179,11 @@ namespace PotatoSW
             Comments = comments.Trim();
         }
 
+        /// <summary>
+        /// Crea un atributo.
+        /// </summary>
+        /// <param name="attributeData">Datos del nuevo atributo.</param>
+        /// <returns>El atributo descrito.</returns>
         private Attribute ParseAttribute(string attributeData)
         {
             Attribute attribute;
@@ -153,6 +196,10 @@ namespace PotatoSW
             return attribute;
         }
 
+        /// <summary>
+        /// Obtiene los atributos (cabeceras) del dataset.
+        /// </summary>
+        /// <param name="headersLine">Atributos separados por coma.</param>
         private void ParseHeaders(string headersLine)
         {
             DataIndex = 1;
@@ -163,6 +210,10 @@ namespace PotatoSW
             }
         }
 
+        /// <summary>
+        /// Carga desde el archivo las instancias separadas por coma del dataset.
+        /// </summary>
+        /// <returns>El conjunto de datos representado en forma de tabla.</returns>
         public DataTable ReadData()
         {
             string[] rows;
@@ -170,7 +221,6 @@ namespace PotatoSW
 
             dataTable = new DataTable(Relation);
             rows = ReadFile();
-            dataTable.Columns.Add("ID");
 
             // Headers as columns into table
             foreach(Attribute attribute in Attributes)
@@ -182,9 +232,8 @@ namespace PotatoSW
             for(int i = DataIndex; i < rows.Length; i++)
             {
                 DataRow dataRow = dataTable.NewRow();
-                string[] values = (i.ToString() + ',' + rows[i]).Split(',');
 
-                dataRow.ItemArray = values;
+                dataRow.ItemArray = rows[i].Split(',');
                 
                 dataTable.Rows.Add(dataRow);
             }
@@ -192,6 +241,11 @@ namespace PotatoSW
             return dataTable;
         }
 
+        /// <summary>
+        /// Escribe en un archivo la descripción del dataset.
+        /// </summary>
+        /// <param name="filePath">Ruta en disco del archivo.</param>
+        /// <param name="data">Las instancias en formato CSV del dataset.</param>
         public void SaveData(string filePath, string data)
         {            
             if (!FilePath.Equals(filePath))
@@ -230,6 +284,11 @@ namespace PotatoSW
             }
         }
         
+        /// <summary>
+        /// Escribe en un archivo con formato de metadatos la descripción del dataset.
+        /// </summary>
+        /// <param name="filepath">Ruta del archivo en disco.</param>
+        /// <param name="data">Instancias del dataset en formato CSV.</param>
         private void SaveAsMetadata(string filepath, string data)
         {
             string buffer;
@@ -271,6 +330,11 @@ namespace PotatoSW
             }
         }
 
+        /// <summary>
+        /// Escribe en un archivo con formato CSV la descripción del dataset.
+        /// </summary>
+        /// <param name="filepath">Ruta en disco del archivo.</param>
+        /// <param name="data">Instancias del dataset en formato CSV.</param>
         private void SaveAsCsv(string filepath, string data)
         {
             string buffer;
@@ -293,12 +357,33 @@ namespace PotatoSW
         }
 
         // Properties
+        /// <summary>
+        /// Ruta en disco del archivo que describe este dataset.
+        /// </summary>
         public string FilePath { get => filePath; set => filePath = value; }
+        /// <summary>
+        /// Formato del archivo para este dataset.
+        /// </summary>
         internal FileTypes FileType { get => fileType; set => fileType = value; }
+        /// <summary>
+        /// [Metadato] Información general del dataset. 
+        /// </summary>
         public string Comments { get => comments; set => comments = value; }
+        /// <summary>
+        /// Nombre del dataset.
+        /// </summary>
         public string Relation { get => relation; set => relation = value; }
+        /// <summary>
+        /// Especifica la cadena utilizada para determinar un valor faltante en el dataset.
+        /// </summary>
         public string MissingValue { get => missingValue; set => missingValue = value; }
+        /// <summary>
+        /// Lista de atributos (cabeceras) del dataset.
+        /// </summary>
         internal List<Attribute> Attributes { get => attributes; set => attributes = value; }
+        /// <summary>
+        /// Linea del archivo en la que inician las instancias del dataset.
+        /// </summary>
         public int DataIndex { get => dataIndex; set => dataIndex = value; }
     }
 }
