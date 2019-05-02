@@ -73,6 +73,7 @@
             this.datasetGrid.Name = "datasetGrid";
             this.datasetGrid.Size = new System.Drawing.Size(527, 411);
             this.datasetGrid.TabIndex = 0;
+            this.datasetGrid.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.DatasetGrid_RowsAdded);
             // 
             // menuStrip1
             // 

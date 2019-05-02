@@ -122,22 +122,19 @@ namespace PotatoSW
                     fileParser.FilePath = openDialog.FileName;
                     fileParser.LoadFile();
                     datasetGrid.DataSource = fileParser.ReadData();
-                    datasetGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+                    nombreR.Visible = true;
+                    nombreR.Text = fileParser.Relation;
+
+                    VerificarDatos();
+
+                    this.datasetGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                    this.datasetGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+
+                    datasetGrid.MouseClick += new MouseEventHandler(DatasetGrid_MouseClick);
+                    datasetGrid.CellDoubleClick += DatasetGrid_CellDoubleClick;
+                    datasetGrid.CellEndEdit += DatasetGrid_CellEndEdit;
                 }
-
-                nombreR.Visible = true;
-                nombreR.Text = Path.GetFileName(openDialog.FileName);
-
-                VerificarDatos();
-
-                this.datasetGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-                this.datasetGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-
-                datasetGrid.MouseClick += new MouseEventHandler(DatasetGrid_MouseClick);
-                datasetGrid.CellDoubleClick += DatasetGrid_CellDoubleClick;
-                datasetGrid.CellEndEdit += DatasetGrid_CellEndEdit;
-
-                cantidadFilas = datasetGrid.Rows.Count - 1;
             }
         }
 
@@ -371,10 +368,13 @@ namespace PotatoSW
         // Funcion que empieza la ediccion de una celda al darle doble click.
         private void DatasetGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            celdaSelect = datasetGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-            fila = e.RowIndex;
-            columna = e.ColumnIndex;
-            datasetGrid.BeginEdit(true);
+            if (e.RowIndex >= 0)
+            {
+                celdaSelect = datasetGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                fila = e.RowIndex;
+                columna = e.ColumnIndex;
+                datasetGrid.BeginEdit(true);
+            }
         }
 
         // Funcion que termina la edicion de la celda.
@@ -757,6 +757,21 @@ namespace PotatoSW
             modaToolStripMenuItem.Visible = true;
             desviaciónEstándarToolStripMenuItem.Visible = true;
             boxPlotToolStripMenuItem.Visible = true;
+        }
+        
+        private void DatasetGrid_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            for(int i = e.RowIndex; i < e.RowIndex + e.RowCount; i++)
+            {
+                DataGridViewRow row = datasetGrid.Rows[i];
+
+                if (!row.IsNewRow || (row.IsNewRow && row.Selected))
+                {
+                    row.HeaderCell.Value = (i + 1).ToString();
+                }
+            }
+
+            datasetGrid.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
         }
     }
 }
