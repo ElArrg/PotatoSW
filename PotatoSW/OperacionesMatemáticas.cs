@@ -84,5 +84,39 @@ namespace PotatoSW
 
             return dev;
         }
+
+        public string ModaLetras(List<string> datosCat)
+        {
+            List<Tuple<string, int>> moda = new List<Tuple<string, int>>();
+
+            moda.Clear();
+
+            bool encontroModa;
+
+            foreach (string con in datosCat)
+            {
+                encontroModa = false;
+
+                for (int i = 0; i < moda.Count; i++)
+                    if (moda[i].Item1 == con)
+                    {
+
+                        encontroModa = true;
+                        moda[i] = new Tuple<string, int>(moda[i].Item1, moda[i].Item2 + 1);
+
+                    }
+
+                if (!encontroModa)
+                {
+
+                    moda.Add(new Tuple<string, int>(con, 1));
+
+                }
+            }
+
+            moda = moda.OrderBy(t => t.Item2).ToList();
+
+            return moda.Last().Item1;
+        }
     }
 }

@@ -48,6 +48,15 @@
             this.pearsonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tschprowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.limpiezaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.llenarValoresFaltantesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.detecciónYCorrecciónDeOutliersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.transformaciónDeDatosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minMaxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zscoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zscoreDesviaciónMediaAbsolutaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.muestreoDeDatosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.conRemplazoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sinnRemplazoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resultadoT = new System.Windows.Forms.Label();
             this.resultadoR = new System.Windows.Forms.Label();
             this.nombreT = new System.Windows.Forms.Label();
@@ -71,9 +80,11 @@
             this.datasetGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.datasetGrid.Location = new System.Drawing.Point(12, 27);
             this.datasetGrid.Name = "datasetGrid";
+            this.datasetGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.datasetGrid.Size = new System.Drawing.Size(527, 411);
             this.datasetGrid.TabIndex = 0;
-            this.datasetGrid.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.DatasetGrid_RowsAdded);
+            this.datasetGrid.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.datasetGrid_RowsAdded);
+            this.datasetGrid.UserAddedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.datasetGrid_UserAddedRow);
             // 
             // menuStrip1
             // 
@@ -133,6 +144,7 @@
             this.análisisToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.univariableToolStripMenuItem,
             this.bivariableToolStripMenuItem});
+            this.análisisToolStripMenuItem.Enabled = false;
             this.análisisToolStripMenuItem.Font = new System.Drawing.Font("Maiandra GD", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.análisisToolStripMenuItem.Name = "análisisToolStripMenuItem";
             this.análisisToolStripMenuItem.Size = new System.Drawing.Size(75, 22);
@@ -148,7 +160,7 @@
             this.boxPlotToolStripMenuItem,
             this.frecuenciaToolStripMenuItem});
             this.univariableToolStripMenuItem.Name = "univariableToolStripMenuItem";
-            this.univariableToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.univariableToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.univariableToolStripMenuItem.Text = "Univariable";
             // 
             // mediaToolStripMenuItem
@@ -205,7 +217,7 @@
             this.pearsonToolStripMenuItem,
             this.tschprowToolStripMenuItem});
             this.bivariableToolStripMenuItem.Name = "bivariableToolStripMenuItem";
-            this.bivariableToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.bivariableToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.bivariableToolStripMenuItem.Text = "Bivariable";
             // 
             // pearsonToolStripMenuItem
@@ -226,10 +238,84 @@
             // 
             // limpiezaToolStripMenuItem
             // 
+            this.limpiezaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.llenarValoresFaltantesToolStripMenuItem,
+            this.detecciónYCorrecciónDeOutliersToolStripMenuItem,
+            this.transformaciónDeDatosToolStripMenuItem,
+            this.muestreoDeDatosToolStripMenuItem});
+            this.limpiezaToolStripMenuItem.Enabled = false;
             this.limpiezaToolStripMenuItem.Font = new System.Drawing.Font("Maiandra GD", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.limpiezaToolStripMenuItem.Name = "limpiezaToolStripMenuItem";
             this.limpiezaToolStripMenuItem.Size = new System.Drawing.Size(86, 22);
             this.limpiezaToolStripMenuItem.Text = "Limpieza";
+            // 
+            // llenarValoresFaltantesToolStripMenuItem
+            // 
+            this.llenarValoresFaltantesToolStripMenuItem.Name = "llenarValoresFaltantesToolStripMenuItem";
+            this.llenarValoresFaltantesToolStripMenuItem.Size = new System.Drawing.Size(325, 22);
+            this.llenarValoresFaltantesToolStripMenuItem.Text = "Llenar valores faltantes";
+            this.llenarValoresFaltantesToolStripMenuItem.Click += new System.EventHandler(this.llenarValoresFaltantesToolStripMenuItem_Click);
+            // 
+            // detecciónYCorrecciónDeOutliersToolStripMenuItem
+            // 
+            this.detecciónYCorrecciónDeOutliersToolStripMenuItem.Name = "detecciónYCorrecciónDeOutliersToolStripMenuItem";
+            this.detecciónYCorrecciónDeOutliersToolStripMenuItem.Size = new System.Drawing.Size(325, 22);
+            this.detecciónYCorrecciónDeOutliersToolStripMenuItem.Text = "Detección y corrección de outliers";
+            this.detecciónYCorrecciónDeOutliersToolStripMenuItem.Click += new System.EventHandler(this.detecciónYCorrecciónDeOutliersToolStripMenuItem_Click);
+            // 
+            // transformaciónDeDatosToolStripMenuItem
+            // 
+            this.transformaciónDeDatosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.minMaxToolStripMenuItem,
+            this.zscoreToolStripMenuItem,
+            this.zscoreDesviaciónMediaAbsolutaToolStripMenuItem});
+            this.transformaciónDeDatosToolStripMenuItem.Name = "transformaciónDeDatosToolStripMenuItem";
+            this.transformaciónDeDatosToolStripMenuItem.Size = new System.Drawing.Size(325, 22);
+            this.transformaciónDeDatosToolStripMenuItem.Text = "Transformación de datos";
+            // 
+            // minMaxToolStripMenuItem
+            // 
+            this.minMaxToolStripMenuItem.Name = "minMaxToolStripMenuItem";
+            this.minMaxToolStripMenuItem.Size = new System.Drawing.Size(336, 22);
+            this.minMaxToolStripMenuItem.Text = "Min-Max";
+            this.minMaxToolStripMenuItem.Click += new System.EventHandler(this.minMaxToolStripMenuItem_Click);
+            // 
+            // zscoreToolStripMenuItem
+            // 
+            this.zscoreToolStripMenuItem.Name = "zscoreToolStripMenuItem";
+            this.zscoreToolStripMenuItem.Size = new System.Drawing.Size(336, 22);
+            this.zscoreToolStripMenuItem.Text = "Z-score(Desviación estandar)";
+            this.zscoreToolStripMenuItem.Click += new System.EventHandler(this.zscoreToolStripMenuItem_Click);
+            // 
+            // zscoreDesviaciónMediaAbsolutaToolStripMenuItem
+            // 
+            this.zscoreDesviaciónMediaAbsolutaToolStripMenuItem.Name = "zscoreDesviaciónMediaAbsolutaToolStripMenuItem";
+            this.zscoreDesviaciónMediaAbsolutaToolStripMenuItem.Size = new System.Drawing.Size(336, 22);
+            this.zscoreDesviaciónMediaAbsolutaToolStripMenuItem.Text = "Z-score(Desviación media absoluta)";
+            this.zscoreDesviaciónMediaAbsolutaToolStripMenuItem.Click += new System.EventHandler(this.zscoreDesviaciónMediaAbsolutaToolStripMenuItem_Click);
+            // 
+            // muestreoDeDatosToolStripMenuItem
+            // 
+            this.muestreoDeDatosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.conRemplazoToolStripMenuItem,
+            this.sinnRemplazoToolStripMenuItem});
+            this.muestreoDeDatosToolStripMenuItem.Name = "muestreoDeDatosToolStripMenuItem";
+            this.muestreoDeDatosToolStripMenuItem.Size = new System.Drawing.Size(325, 22);
+            this.muestreoDeDatosToolStripMenuItem.Text = "Muestreo de datos";
+            // 
+            // conRemplazoToolStripMenuItem
+            // 
+            this.conRemplazoToolStripMenuItem.Name = "conRemplazoToolStripMenuItem";
+            this.conRemplazoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.conRemplazoToolStripMenuItem.Text = "Con remplazo";
+            this.conRemplazoToolStripMenuItem.Click += new System.EventHandler(this.conRemplazoToolStripMenuItem_Click);
+            // 
+            // sinnRemplazoToolStripMenuItem
+            // 
+            this.sinnRemplazoToolStripMenuItem.Name = "sinnRemplazoToolStripMenuItem";
+            this.sinnRemplazoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.sinnRemplazoToolStripMenuItem.Text = "Sin remplazo";
+            this.sinnRemplazoToolStripMenuItem.Click += new System.EventHandler(this.sinnRemplazoToolStripMenuItem_Click);
             // 
             // resultadoT
             // 
@@ -443,5 +529,14 @@
         private System.Windows.Forms.ToolStripMenuItem boxPlotToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem frecuenciaToolStripMenuItem;
         private System.Windows.Forms.Label multiUso;
+        private System.Windows.Forms.ToolStripMenuItem llenarValoresFaltantesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem detecciónYCorrecciónDeOutliersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem transformaciónDeDatosToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem minMaxToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem zscoreToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem zscoreDesviaciónMediaAbsolutaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem muestreoDeDatosToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem conRemplazoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sinnRemplazoToolStripMenuItem;
     }
 }

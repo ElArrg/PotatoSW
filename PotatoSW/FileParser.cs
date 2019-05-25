@@ -191,7 +191,7 @@ namespace PotatoSW
 
             elements = attributeData.Split(new char[] { ' ' }, 3);
 
-            attribute = new Attribute(elements[0], elements[1], elements[2]);
+            attribute = new Attribute(elements[0].Trim('"', '\'', ' '), elements[1].Trim('"', '\'', ' '), elements[2].Trim('"', '\'', ' '));
 
             return attribute;
         }
@@ -206,7 +206,7 @@ namespace PotatoSW
 
             foreach(string header in headersLine.Split(','))
             {
-                Attributes.Add(new Attribute(header));
+                Attributes.Add(new Attribute(header.Trim('"', '\'', ' ')));
             }
         }
 
@@ -232,8 +232,14 @@ namespace PotatoSW
             for(int i = DataIndex; i < rows.Length; i++)
             {
                 DataRow dataRow = dataTable.NewRow();
+                string[] values = rows[i].Split(',');
 
-                dataRow.ItemArray = rows[i].Split(',');
+                for(int  j = 0; j < values.Length; j++)
+                {
+                    values[j] = values[j].Trim('"', '\'', ' ');
+                }
+
+                dataRow.ItemArray = values;
                 
                 dataTable.Rows.Add(dataRow);
             }
